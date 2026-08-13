@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ThermoLab VR - Experimentos</title>
+
+
+    <!-- =====================================================
+         A-FRAME
+    ====================================================== -->
+
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <!-- Renderiza texto a partir da fonte real (Baloo 2), garantindo
+         que acentos (ã, â, õ, ê, á, í, ó, ç...) apareçam corretamente. -->
+    <script src="https://unpkg.com/aframe-troika-text/dist/aframe-troika-text.min.js"></script>
+
+
+    <!-- =====================================================
+         FONTE
+    ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         CSS
+    ====================================================== -->
+
+    <style>
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #EAF4FF;
+
+            font-family: 'Baloo 2', Arial, sans-serif;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<a-scene
+
+    background="color: #EAF4FF"
+
+    renderer="
+        colorManagement: true;
+        antialias: true;
+    "
+
+    vr-mode-ui="enabled: true">
+
+
+    <!-- =====================================================
+         FONTES (Baloo 2 - arquivo real, com acentuação completa)
+    ====================================================== -->
+
+    <a-assets>
+
+        <img
+            id="logo"
+            src="./logo.png"
+        >
+
+    </a-assets>
+
+
+    <!-- =====================================================
+         FUNDO
+    ====================================================== -->
+
+    <a-sky
+        color="#EAF4FF">
+    </a-sky>
+
+
+    <!-- =====================================================
+         LUZ AMBIENTE
+    ====================================================== -->
+
+    <a-light
+
+        type="ambient"
+
+        color="#ffffff"
+
+        intensity="0.95">
+
+    </a-light>
+
+
+    <a-light
+
+        type="directional"
+
+        color="#ffffff"
+
+        intensity="0.35"
+
+        position="2 6 4">
+
+    </a-light>
+
+
+    <!-- =====================================================
+         PARTÍCULAS
+    ====================================================== -->
+
+    <a-entity id="particulas"></a-entity>
+
+
+    <!-- =====================================================
+         PAINEL PRINCIPAL
+    ====================================================== -->
+
+    <a-plane
+
+        id="painelPrincipal"
+
+        position="0 2.3 -4"
+
+        width="6.9"
+
+        height="5.3"
+
+        color="#FFFFFF"
+
+        material="
+            shader: flat;
+            transparent: true;
+        ">
+
+    </a-plane>
+
+
+    <!-- =====================================================
+         EMBLEMA / LOGO
+    ====================================================== -->
+
+    <a-circle
+
+        id="logoBackdrop"
+
+        position="-3.05 4.68 -3.97"
+
+        radius="0.34"
+
+        color="#FFFFFF"
+
+        material="
+            shader: flat;
+            transparent: true;
+        ">
+
+    </a-circle>
+
+    <a-circle
+
+        position="-3.05 4.68 -3.9"
+
+        radius="0.29"
+
+        material="
+            src: #logo;
+            shader: flat;
+            transparent: true;
+        ">
+
+    </a-circle>
+
+
+    <!-- =====================================================
+         TÍTULO
+    ====================================================== -->
+
+    <a-troika-text
+
+        value="Escolha um experimento"
+
+        align="center"
+
+        color="#14213D"
+
+        font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-800-normal.woff"
+
+        font-size="0.34"
+
+        max-width="6.2"
+
+        position="0 4.55 -3.88">
+
+    </a-troika-text>
+
+
+    <!-- =====================================================
+         SUBTÍTULO
+    ====================================================== -->
+
+    <a-troika-text
+
+        value="Complete os três experimentos para finalizar a experiência."
+
+        align="center"
+
+        color="#5C6B85"
+
+        font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-500-normal.woff"
+
+        font-size="0.155"
+
+        max-width="6"
+
+        position="0 4.16 -3.88">
+
+    </a-troika-text>
+
+
+    <!-- =====================================================
+         PROGRESSO
+    ====================================================== -->
+
+    <a-troika-text
+
+        id="progresso"
+
+        value="PROGRESSO: 0 / 3"
+
+        align="center"
+
+        color="#2A9D8F"
+
+        font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+        font-size="0.155"
+
+        letter-spacing="0.02"
+
+        position="0 3.84 -3.88">
+
+    </a-troika-text>
+
+
+
+    <!-- =====================================================
+         EXPERIMENTO 1
+    ====================================================== -->
+
+    <a-entity id="experimento1">
+
+
+        <!-- PAINEL -->
+
+        <a-plane
+
+            position="-2.25 2.55 -3.88"
+
+            width="2.0"
+
+            height="1.85"
+
+            color="#BEE3F8"
+
+            material="shader: flat; transparent: true;">
+
+        </a-plane>
+
+
+        <!-- SELO DO NÚMERO -->
+
+        <a-circle
+
+            position="-2.98 3.28 -3.86"
+
+            radius="0.2"
+
+            color="#FFFFFF"
+
+            material="shader: flat; transparent: true;">
+
+        </a-circle>
+
+        <a-troika-text
+
+            value="01"
+
+            align="center"
+
+            anchor="center"
+
+            baseline="center"
+
+            color="#2D6CFF"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-800-normal.woff"
+
+            font-size="0.16"
+
+            position="-2.98 3.28 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- NOME -->
+
+        <a-troika-text
+
+            value="Mudanças"
+
+            align="center"
+
+            color="#14213D"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.185"
+
+            position="-2.25 2.86 -3.84">
+
+        </a-troika-text>
+
+        <a-troika-text
+
+            value="de Estado"
+
+            align="center"
+
+            color="#14213D"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.185"
+
+            position="-2.25 2.62 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- DESCRIÇÃO -->
+
+        <a-troika-text
+
+            value="Gelo → Água → Vapor"
+
+            align="center"
+
+            color="#5C6B85"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-500-normal.woff"
+
+            font-size="0.115"
+
+            position="-2.25 2.3 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- BOTÃO -->
+
+        <a-plane
+
+            id="btnMudancas"
+
+            class="experimentoBotao"
+
+            position="-2.25 1.85 -3.86"
+
+            width="1.4"
+
+            height="0.42"
+
+            color="#2D6CFF"
+
+            material="
+                shader: flat;
+                transparent: true;
+            ">
+
+        </a-plane>
+
+
+        <a-troika-text
+
+            value="Iniciar  →"
+
+            align="center"
+
+            color="#ffffff"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.14"
+
+            position="-2.25 1.85 -3.89">
+
+        </a-troika-text>
+
+    </a-entity>
+
+
+
+    <!-- =====================================================
+         EXPERIMENTO 2
+    ====================================================== -->
+
+    <a-entity id="experimento2">
+
+
+        <!-- PAINEL -->
+
+        <a-plane
+
+            position="0 2.55 -3.88"
+
+            width="2.0"
+
+            height="1.85"
+
+            color="#FFD2D2"
+
+            material="shader: flat; transparent: true;">
+
+        </a-plane>
+
+
+        <!-- SELO DO NÚMERO -->
+
+        <a-circle
+
+            position="-0.73 3.28 -3.86"
+
+            radius="0.2"
+
+            color="#FFFFFF"
+
+            material="shader: flat; transparent: true;">
+
+        </a-circle>
+
+        <a-troika-text
+
+            value="02"
+
+            align="center"
+
+            anchor="center"
+
+            baseline="center"
+
+            color="#FF3B5C"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-800-normal.woff"
+
+            font-size="0.16"
+
+            position="-0.73 3.28 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- NOME -->
+
+        <a-troika-text
+
+            value="Reações"
+
+            align="center"
+
+            color="#14213D"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.185"
+
+            position="0 2.86 -3.84">
+
+        </a-troika-text>
+
+        <a-troika-text
+
+            value="Químicas"
+
+            align="center"
+
+            color="#14213D"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.185"
+
+            position="0 2.62 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- DESCRIÇÃO -->
+
+        <a-troika-text
+
+            value="Misture A + B + C"
+
+            align="center"
+
+            color="#5C6B85"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-500-normal.woff"
+
+            font-size="0.115"
+
+            position="0 2.3 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- BOTÃO -->
+
+        <a-plane
+
+            id="btnReacoes"
+
+            class="experimentoBotao"
+
+            position="0 1.85 -3.86"
+
+            width="1.4"
+
+            height="0.42"
+
+            color="#D9E2EC"
+
+            material="
+                shader: flat;
+                transparent: true;
+            ">
+
+        </a-plane>
+
+
+        <a-troika-text
+
+            id="textoBotao2"
+
+            value="Bloqueado"
+
+            align="center"
+
+            color="#8A97AC"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.13"
+
+            position="0 1.85 -3.89">
+
+        </a-troika-text>
+
+    </a-entity>
+
+
+
+    <!-- =====================================================
+         EXPERIMENTO 3
+    ====================================================== -->
+
+    <a-entity id="experimento3">
+
+
+        <!-- PAINEL -->
+
+        <a-plane
+
+            position="2.25 2.55 -3.88"
+
+            width="2.0"
+
+            height="1.85"
+
+            color="#FFE9A8"
+
+            material="shader: flat; transparent: true;">
+
+        </a-plane>
+
+
+        <!-- SELO DO NÚMERO -->
+
+        <a-circle
+
+            position="1.52 3.28 -3.86"
+
+            radius="0.2"
+
+            color="#FFFFFF"
+
+            material="shader: flat; transparent: true;">
+
+        </a-circle>
+
+        <a-troika-text
+
+            value="03"
+
+            align="center"
+
+            anchor="center"
+
+            baseline="center"
+
+            color="#E08A00"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-800-normal.woff"
+
+            font-size="0.16"
+
+            position="1.52 3.28 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- NOME -->
+
+        <a-troika-text
+
+            value="Máquina"
+
+            align="center"
+
+            color="#14213D"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.185"
+
+            position="2.25 2.86 -3.84">
+
+        </a-troika-text>
+
+        <a-troika-text
+
+            value="a Vapor"
+
+            align="center"
+
+            color="#14213D"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.185"
+
+            position="2.25 2.62 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- DESCRIÇÃO -->
+
+        <a-troika-text
+
+            value="Energia → Movimento"
+
+            align="center"
+
+            color="#5C6B85"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-500-normal.woff"
+
+            font-size="0.115"
+
+            position="2.25 2.3 -3.84">
+
+        </a-troika-text>
+
+
+        <!-- BOTÃO -->
+
+        <a-plane
+
+            id="btnMaquina"
+
+            class="experimentoBotao"
+
+            position="2.25 1.85 -3.86"
+
+            width="1.4"
+
+            height="0.42"
+
+            color="#D9E2EC"
+
+            material="
+                shader: flat;
+                transparent: true;
+            ">
+
+        </a-plane>
+
+
+        <a-troika-text
+
+            id="textoBotao3"
+
+            value="Bloqueado"
+
+            align="center"
+
+            color="#8A97AC"
+
+            font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-700-normal.woff"
+
+            font-size="0.13"
+
+            position="2.25 1.85 -3.89">
+
+        </a-troika-text>
+
+    </a-entity>
+
+
+
+    <!-- =====================================================
+         INFORMAÇÃO INFERIOR
+    ====================================================== -->
+
+    <a-troika-text
+
+        value="Olhe para um botão para selecionar"
+
+        align="center"
+
+        color="#8A97AC"
+
+        font="https://cdn.jsdelivr.net/fontsource/fonts/baloo-2@latest/latin-500-normal.woff"
+
+        font-size="0.13"
+
+        position="0 1.15 -3.88">
+
+    </a-troika-text>
+
+
+
+    <!-- =====================================================
+         CÂMERA
+    ====================================================== -->
+
+    <a-camera
+
+        position="0 1.6 0"
+
+        look-controls>
+
+
+        <a-cursor
+
+            id="cursor"
+
+            fuse="true"
+
+            fuse-timeout="1200"
+
+            raycaster="
+                objects: .experimentoBotao;
+                far: 20;
+            "
+
+            geometry="
+                primitive: ring;
+                radiusInner: 0.012;
+                radiusOuter: 0.023;
+            "
+
+            material="
+                shader: flat;
+                color: #2D6CFF;
+            ">
+
+        </a-cursor>
+
+    </a-camera>
+
+
+</a-scene>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     (lógica original preservada — apenas as cores usadas nos
+     estados dos botões foram ajustadas para a nova paleta)
+========================================================= -->
+
+<script>
+
+
+/* ============================================================
+   TEXTURAS (cantos arredondados + sombra suave)
+   Adição puramente visual — não interfere na lógica abaixo.
+============================================================ */
+
+
+function roundRectPath(ctx, x, y, w, h, r) {
+
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+
+}
+
+
+function makeCanvasTexture(elId, w, h, draw) {
+
+    const canvas = document.createElement("canvas");
+    canvas.id = elId;
+    canvas.width = w;
+    canvas.height = h;
+    canvas.style.display = "none";
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext("2d");
+    draw(ctx, w, h);
+
+    return canvas;
+
+}
+
+
+makeCanvasTexture("texPanel", 900, 700, (ctx, w, h) => {
+    ctx.save();
+    ctx.shadowColor = "rgba(20,40,80,0.16)";
+    ctx.shadowBlur = 40;
+    ctx.shadowOffsetY = 14;
+    roundRectPath(ctx, 24, 24, w - 48, h - 48, 46);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.restore();
+});
+
+makeCanvasTexture("texCard", 620, 570, (ctx, w, h) => {
+    ctx.save();
+    ctx.shadowColor = "rgba(20,40,80,0.18)";
+    ctx.shadowBlur = 26;
+    ctx.shadowOffsetY = 10;
+    roundRectPath(ctx, 18, 18, w - 36, h - 36, 40);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.restore();
+});
+
+makeCanvasTexture("texPill", 620, 190, (ctx, w, h) => {
+    ctx.save();
+    ctx.shadowColor = "rgba(20,40,80,0.22)";
+    ctx.shadowBlur = 16;
+    ctx.shadowOffsetY = 6;
+    roundRectPath(ctx, 14, 14, w - 28, h - 28, (h - 28) / 2);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.restore();
+});
+
+makeCanvasTexture("texBadge", 260, 260, (ctx, w, h) => {
+    ctx.save();
+    ctx.shadowColor = "rgba(20,40,80,0.2)";
+    ctx.shadowBlur = 14;
+    ctx.beginPath();
+    ctx.arc(w / 2, h / 2, w / 2 - 16, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.restore();
+});
+
+
+function applyTexture(id, texId) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute("material", { shader: "flat", src: "#" + texId, transparent: true });
+}
+
+applyTexture("painelPrincipal", "texPanel");
+applyTexture("logoBackdrop", "texBadge");
+
+document.querySelectorAll("#experimento1 a-plane, #experimento2 a-plane, #experimento3 a-plane")
+    .forEach((el) => {
+        if (el.classList.contains("experimentoBotao")) {
+            el.setAttribute("material", { shader: "flat", src: "#texPill", transparent: true });
+        } else {
+            el.setAttribute("material", { shader: "flat", src: "#texCard", transparent: true });
+        }
+    });
+
+document.querySelectorAll("#experimento1 a-circle, #experimento2 a-circle, #experimento3 a-circle")
+    .forEach((el) => {
+        el.setAttribute("material", { shader: "flat", src: "#texBadge", transparent: true });
+    });
+
+
+
+/* ============================================================
+   PARTÍCULAS 360°
+============================================================ */
+
+
+const ambiente =
+    document.getElementById("particulas");
+
+
+const quantidadeParticulas = 180;
+
+
+for (
+    let i = 0;
+    i < quantidadeParticulas;
+    i++
+) {
+
+
+    const particula =
+        document.createElement("a-sphere");
+
+
+    /*
+     * DISTÂNCIA
+     */
+
+    const distancia =
+        6 + Math.random() * 10;
+
+
+    /*
+     * DIREÇÃO 360°
+     */
+
+    const angulo =
+        Math.random() * Math.PI * 2;
+
+
+    /*
+     * ALTURA
+     */
+
+    const altura =
+        -2 + Math.random() * 7;
+
+
+    /*
+     * POSIÇÃO
+     */
+
+    const x =
+        Math.cos(angulo) * distancia;
+
+
+    const z =
+        Math.sin(angulo) * distancia;
+
+
+    /*
+     * TAMANHO
+     */
+
+    const tamanho =
+        0.015 + Math.random() * 0.04;
+
+
+    /*
+     * COR
+     */
+
+    const cor =
+        Math.random() < 0.5
+            ? "#2D6CFF"
+            : "#FF6B8A";
+
+
+    particula.setAttribute(
+        "position",
+        `${x} ${altura} ${z}`
+    );
+
+
+    particula.setAttribute(
+        "radius",
+        tamanho
+    );
+
+
+    particula.setAttribute(
+        "color",
+        cor
+    );
+
+
+    particula.setAttribute(
+        "material",
+        `
+        shader: flat;
+        color: ${cor};
+        opacity: 0.55;
+        transparent: true;
+        `
+    );
+
+
+    ambiente.appendChild(
+        particula
+    );
+
+}
+
+
+
+/* ============================================================
+   PROGRESSO
+============================================================ */
+
+
+const progresso =
+    document.getElementById("progresso");
+
+
+/*
+ * Recupera o progresso salvo.
+ */
+
+let mudancasConcluido =
+    localStorage.getItem(
+        "mudancasConcluido"
+    ) === "true";
+
+
+let reacoesConcluido =
+    localStorage.getItem(
+        "reacoesConcluido"
+    ) === "true";
+
+
+let maquinaConcluido =
+    localStorage.getItem(
+        "maquinaConcluido"
+    ) === "true";
+
+
+
+/* ============================================================
+   ATUALIZAR PROGRESSO
+============================================================ */
+
+
+function atualizarProgresso() {
+
+
+    let total = 0;
+
+
+    if (mudancasConcluido) {
+
+        total++;
+
+    }
+
+
+    if (reacoesConcluido) {
+
+        total++;
+
+    }
+
+
+    if (maquinaConcluido) {
+
+        total++;
+
+    }
+
+
+    progresso.setAttribute(
+
+        "value",
+
+        "PROGRESSO: " + total + " / 3"
+
+    );
+
+}
+
+
+atualizarProgresso();
+
+
+
+/* ============================================================
+   ELEMENTOS
+============================================================ */
+
+
+const btnMudancas =
+    document.getElementById(
+        "btnMudancas"
+    );
+
+
+const btnReacoes =
+    document.getElementById(
+        "btnReacoes"
+    );
+
+
+const btnMaquina =
+    document.getElementById(
+        "btnMaquina"
+    );
+
+
+const textoBotao2 =
+    document.getElementById(
+        "textoBotao2"
+    );
+
+
+const textoBotao3 =
+    document.getElementById(
+        "textoBotao3"
+    );
+
+
+
+/* ============================================================
+   LIBERAR EXPERIMENTOS
+============================================================ */
+
+
+/*
+ * Se mudanças já foi concluído,
+ * libera reações.
+ */
+
+if (mudancasConcluido) {
+
+
+    btnReacoes.setAttribute(
+
+        "color",
+
+        "#2D6CFF"
+
+    );
+
+
+    textoBotao2.setAttribute(
+
+        "value",
+
+        "Iniciar  →"
+
+    );
+
+
+    textoBotao2.setAttribute(
+
+        "color",
+
+        "#ffffff"
+
+    );
+
+
+    btnReacoes.classList.add(
+        "botaoLiberado"
+    );
+
+}
+
+
+
+/*
+ * Se reações já foi concluído,
+ * libera máquina.
+ */
+
+if (reacoesConcluido) {
+
+
+    btnMaquina.setAttribute(
+
+        "color",
+
+        "#2D6CFF"
+
+    );
+
+
+    textoBotao3.setAttribute(
+
+        "value",
+
+        "Iniciar  →"
+
+    );
+
+
+    textoBotao3.setAttribute(
+
+        "color",
+
+        "#ffffff"
+
+    );
+
+
+    btnMaquina.classList.add(
+        "botaoLiberado"
+    );
+
+}
+
+
+
+/* ============================================================
+   SISTEMA DE OLHAR
+============================================================ */
+
+
+let olhando =
+    false;
+
+
+let temporizador =
+    null;
+
+
+/*
+ * Qual botão está sendo observado.
+ */
+
+function iniciarOlhar(botao, destino, permitido) {
+
+
+    botao.addEventListener(
+
+        "mouseenter",
+
+        function () {
+
+
+            if (!permitido()) {
+
+                return;
+
+            }
+
+
+            olhando = true;
+
+
+            /*
+             * Pequeno atraso para seleção.
+             */
+
+            temporizador = setTimeout(
+
+                function () {
+
+
+                    if (olhando) {
+
+                        window.location.href =
+                            destino;
+
+                    }
+
+                },
+
+                1200
+
+            );
+
+        }
+
+    );
+
+
+    botao.addEventListener(
+
+        "mouseleave",
+
+        function () {
+
+
+            olhando = false;
+
+
+            clearTimeout(
+                temporizador
+            );
+
+        }
+
+    );
+
+
+
+    /*
+     * Também permite clique.
+     */
+
+    botao.addEventListener(
+
+        "click",
+
+        function () {
+
+
+            if (permitido()) {
+
+                window.location.href =
+                    destino;
+
+            }
+
+        }
+
+    );
+
+}
+
+
+
+/* ============================================================
+   EXPERIMENTO 1
+============================================================ */
+
+
+iniciarOlhar(
+
+    btnMudancas,
+
+    "./mudancas.html",
+
+    function () {
+
+        return true;
+
+    }
+
+);
+
+
+
+/* ============================================================
+   EXPERIMENTO 2
+============================================================ */
+
+
+iniciarOlhar(
+
+    btnReacoes,
+
+    "./reacoes.html",
+
+    function () {
+
+        return mudancasConcluido;
+
+    }
+
+);
+
+
+
+/* ============================================================
+   EXPERIMENTO 3
+============================================================ */
+
+
+iniciarOlhar(
+
+    btnMaquina,
+
+    "./maquina.html",
+
+    function () {
+
+        return reacoesConcluido;
+
+    }
+
+);
+
+
+</script>
+
+
+</body>
+
+</html>

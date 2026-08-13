@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ThermoLab VR - Máquina a Vapor</title>
+
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+
+            font-family: 'Orbitron', sans-serif;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<a-scene
+
+    background="color: #000000"
+
+    renderer="
+        colorManagement: true;
+        antialias: true;
+    "
+
+    vr-mode-ui="enabled: true">
+
+
+    <!-- =====================================================
+         ASSETS
+    ====================================================== -->
+
+    <a-assets>
+
+        <img
+            id="logo"
+            src="./logo.png"
+        >
+
+    </a-assets>
+
+
+    <!-- =====================================================
+         FUNDO
+    ====================================================== -->
+
+    <a-sky
+        color="#000000">
+    </a-sky>
+
+
+    <!-- =====================================================
+         ILUMINAÇÃO
+    ====================================================== -->
+
+    <a-light
+        type="ambient"
+        color="#ffffff"
+        intensity="0.45">
+    </a-light>
+
+
+    <a-light
+        type="point"
+        position="-5 4 -4"
+        color="#008cff"
+        intensity="8"
+        distance="15">
+    </a-light>
+
+
+    <a-light
+        type="point"
+        position="5 3 -4"
+        color="#ff1744"
+        intensity="7"
+        distance="15">
+    </a-light>
+
+
+    <!-- =====================================================
+         PARTÍCULAS
+    ====================================================== -->
+
+    <a-entity id="particulas"></a-entity>
+
+
+    <!-- =====================================================
+         PAINEL PRINCIPAL
+    ====================================================== -->
+
+    <a-plane
+
+        position="0 2.1 -4"
+
+        width="7"
+
+        height="5.7"
+
+        color="#080808"
+
+        material="
+            shader: flat;
+            transparent: true;
+            opacity: 0.96;
+        ">
+
+    </a-plane>
+
+
+    <!-- LINHA AZUL -->
+
+    <a-plane
+
+        position="0 4.92 -3.92"
+
+        width="7"
+
+        height="0.025"
+
+        color="#008cff"
+
+        material="
+            shader: flat;
+            emissive: #008cff;
+            emissiveIntensity: 5;
+        ">
+
+    </a-plane>
+
+
+    <!-- LINHA VERMELHA -->
+
+    <a-plane
+
+        position="0 -0.72 -3.92"
+
+        width="7"
+
+        height="0.025"
+
+        color="#ff1744"
+
+        material="
+            shader: flat;
+            emissive: #ff1744;
+            emissiveIntensity: 5;
+        ">
+
+    </a-plane>
+
+
+    <!-- =====================================================
+         LOGO
+    ====================================================== -->
+
+    <a-circle
+
+        position="-2.9 4.45 -3.88"
+
+        radius="0.32"
+
+        material="
+            src: #logo;
+            shader: flat;
+            transparent: true;
+        ">
+
+    </a-circle>
+
+
+    <a-ring
+
+        position="-2.9 4.45 -3.86"
+
+        radius-inner="0.32"
+
+        radius-outer="0.36"
+
+        color="#008cff"
+
+        material="
+            shader: flat;
+            emissive: #008cff;
+            emissiveIntensity: 4;
+        ">
+
+    </a-ring>
+
+
+    <!-- =====================================================
+         TÍTULO
+    ====================================================== -->
+
+    <a-text
+
+        value="EXPERIMENTO 03"
+
+        align="center"
+
+        color="#008cff"
+
+        width="3"
+
+        position="0 4.55 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        value="MÁQUINA A VAPOR"
+
+        align="center"
+
+        color="#ffffff"
+
+        width="5"
+
+        position="0 4.18 -3.87">
+
+    </a-text>
+
+
+    <!-- =====================================================
+         INSTRUÇÃO
+    ====================================================== -->
+
+    <a-text
+
+        id="instrucao"
+
+        value="Segure o gatilho e arraste a potência para a direita."
+
+        align="center"
+
+        color="#aaaaaa"
+
+        width="4"
+
+        position="0 3.65 -3.87">
+
+    </a-text>
+
+
+    <!-- =====================================================
+         MÁQUINA
+    ====================================================== -->
+
+    <!-- Corpo principal -->
+
+    <a-box
+
+        position="0 2.25 -3.88"
+
+        width="2.6"
+
+        height="1.3"
+
+        depth="0.55"
+
+        color="#151515"
+
+        material="
+            shader: flat;
+            emissive: #06121d;
+            emissiveIntensity: 1;
+        ">
+
+    </a-box>
+
+
+    <!-- Borda superior -->
+
+    <a-box
+
+        position="0 2.92 -3.88"
+
+        width="2.7"
+
+        height="0.08"
+
+        depth="0.6"
+
+        color="#008cff"
+
+        material="
+            shader: flat;
+            emissive: #008cff;
+            emissiveIntensity: 3;
+        ">
+
+    </a-box>
+
+
+    <!-- Caldeira -->
+
+    <a-cylinder
+
+        position="0 2.3 -4.22"
+
+        rotation="90 0 0"
+
+        radius="0.65"
+
+        height="1.7"
+
+        color="#222222"
+
+        material="
+            shader: flat;
+            emissive: #080808;
+            emissiveIntensity: 1;
+        ">
+
+    </a-cylinder>
+
+
+    <!-- =====================================================
+         FOGO
+    ====================================================== -->
+
+    <a-entity id="fogo">
+
+        <a-sphere
+            id="fogo1"
+            position="-0.35 1.48 -3.9"
+            radius="0.12"
+            color="#ff1744"
+            material="
+                shader: flat;
+                emissive: #ff1744;
+                emissiveIntensity: 5;
+            ">
+        </a-sphere>
+
+
+        <a-sphere
+            id="fogo2"
+            position="0 1.48 -3.9"
+            radius="0.16"
+            color="#ff6a00"
+            material="
+                shader: flat;
+                emissive: #ff6a00;
+                emissiveIntensity: 5;
+            ">
+        </a-sphere>
+
+
+        <a-sphere
+            id="fogo3"
+            position="0.35 1.48 -3.9"
+            radius="0.12"
+            color="#ff1744"
+            material="
+                shader: flat;
+                emissive: #ff1744;
+                emissiveIntensity: 5;
+            ">
+        </a-sphere>
+
+    </a-entity>
+
+
+    <!-- =====================================================
+         ENGRENAGENS
+    ====================================================== -->
+
+    <a-torus
+
+        id="engrenagem1"
+
+        position="-0.75 2.3 -3.48"
+
+        radius="0.35"
+
+        radius-tubular="0.07"
+
+        color="#008cff"
+
+        rotation="90 0 0"
+
+        material="
+            shader: flat;
+            emissive: #008cff;
+            emissiveIntensity: 3;
+        ">
+
+    </a-torus>
+
+
+    <a-torus
+
+        id="engrenagem2"
+
+        position="0.75 2.3 -3.48"
+
+        radius="0.28"
+
+        radius-tubular="0.06"
+
+        color="#ff1744"
+
+        rotation="90 0 0"
+
+        material="
+            shader: flat;
+            emissive: #ff1744;
+            emissiveIntensity: 3;
+        ">
+
+    </a-torus>
+
+
+    <!-- =====================================================
+         VAPOR
+    ====================================================== -->
+
+    <a-entity
+        id="vapor"
+        visible="false">
+
+
+        <a-sphere
+
+            position="-0.35 3.25 -3.88"
+
+            radius="0.16"
+
+            color="#ffffff"
+
+            material="
+                shader: flat;
+                transparent: true;
+                opacity: 0.45;
+            "
+
+            animation="
+                property: position;
+                from: -0.35 3.15 -3.88;
+                to: -0.35 3.8 -3.88;
+                dur: 1800;
+                loop: true;
+            ">
+
+        </a-sphere>
+
+
+        <a-sphere
+
+            position="0 3.25 -3.88"
+
+            radius="0.22"
+
+            color="#ffffff"
+
+            material="
+                shader: flat;
+                transparent: true;
+                opacity: 0.35;
+            "
+
+            animation="
+                property: position;
+                from: 0 3.2 -3.88;
+                to: 0.1 3.9 -3.88;
+                dur: 2200;
+                loop: true;
+            ">
+
+        </a-sphere>
+
+
+        <a-sphere
+
+            position="0.35 3.25 -3.88"
+
+            radius="0.15"
+
+            color="#ffffff"
+
+            material="
+                shader: flat;
+                transparent: true;
+                opacity: 0.4;
+            "
+
+            animation="
+                property: position;
+                from: 0.35 3.2 -3.88;
+                to: 0.45 3.75 -3.88;
+                dur: 1600;
+                loop: true;
+            ">
+
+        </a-sphere>
+
+
+    </a-entity>
+
+
+    <!-- =====================================================
+         INDICADORES
+    ====================================================== -->
+
+    <a-text
+
+        value="PRESSÃO"
+
+        align="center"
+
+        color="#777777"
+
+        width="2"
+
+        position="-1.8 1.25 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        id="pressao"
+
+        value="0%"
+
+        align="center"
+
+        color="#008cff"
+
+        width="2.4"
+
+        position="-1.8 0.92 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        value="TEMPERATURA"
+
+        align="center"
+
+        color="#777777"
+
+        width="2"
+
+        position="0 1.25 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        id="temperatura"
+
+        value="20 °C"
+
+        align="center"
+
+        color="#ff1744"
+
+        width="2.4"
+
+        position="0 0.92 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        value="ENERGIA"
+
+        align="center"
+
+        color="#777777"
+
+        width="2"
+
+        position="1.8 1.25 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        id="energia"
+
+        value="0%"
+
+        align="center"
+
+        color="#7b2cff"
+
+        width="2.4"
+
+        position="1.8 0.92 -3.87">
+
+    </a-text>
+
+
+    <!-- =====================================================
+         BARRA DE POTÊNCIA
+    ====================================================== -->
+
+    <a-text
+
+        value="POTÊNCIA DO AQUECIMENTO"
+
+        align="center"
+
+        color="#ffffff"
+
+        width="3"
+
+        position="0 0.55 -3.87">
+
+    </a-text>
+
+
+    <!-- Barra externa -->
+
+    <a-plane
+
+        id="barraPotencia"
+
+        class="interativo"
+
+        position="0 0.25 -3.87"
+
+        width="4.4"
+
+        height="0.30"
+
+        color="#222222"
+
+        material="
+            shader: flat;
+            emissive: #06121d;
+            emissiveIntensity: 1;
+        ">
+
+    </a-plane>
+
+
+    <!-- Barra preenchida -->
+
+    <a-plane
+
+        id="barraPreenchida"
+
+        position="-2.15 0.25 -3.84"
+
+        width="0"
+
+        height="0.20"
+
+        color="#ff1744"
+
+        material="
+            shader: flat;
+            emissive: #ff1744;
+            emissiveIntensity: 4;
+        ">
+
+    </a-plane>
+
+
+    <!-- Controle que o usuário arrasta -->
+
+    <a-sphere
+
+        id="controlePotencia"
+
+        class="interativo"
+
+        position="-2.15 0.25 -3.80"
+
+        radius="0.20"
+
+        color="#008cff"
+
+        material="
+            shader: flat;
+            emissive: #008cff;
+            emissiveIntensity: 5;
+        ">
+
+    </a-sphere>
+
+
+    <!-- Limites -->
+
+    <a-text
+
+        value="0%"
+
+        align="center"
+
+        color="#777777"
+
+        width="1"
+
+        position="-2.15 -0.10 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        value="50%"
+
+        align="center"
+
+        color="#777777"
+
+        width="1"
+
+        position="0 -0.10 -3.87">
+
+    </a-text>
+
+
+    <a-text
+
+        value="100%"
+
+        align="center"
+
+        color="#ff1744"
+
+        width="1"
+
+        position="2.15 -0.10 -3.87">
+
+    </a-text>
+
+
+    <!-- =====================================================
+         LÂMPADA
+    ====================================================== -->
+
+    <a-entity
+        id="lampada"
+        position="0 -0.38 -3.88">
+
+
+        <a-sphere
+
+            id="luzLampada"
+
+            radius="0.28"
+
+            color="#333333"
+
+            material="
+                shader: flat;
+                emissive: #000000;
+                emissiveIntensity: 0;
+            ">
+
+        </a-sphere>
+
+
+        <a-ring
+
+            radius-inner="0.32"
+
+            radius-outer="0.38"
+
+            color="#555555"
+
+            material="
+                shader: flat;
+            ">
+
+        </a-ring>
+
+
+    </a-entity>
+
+
+    <!-- =====================================================
+         STATUS
+    ====================================================== -->
+
+    <a-text
+
+        id="status"
+
+        value="MÁQUINA DESLIGADA"
+
+        align="center"
+
+        color="#777777"
+
+        width="3"
+
+        position="0 -0.70 -3.87">
+
+    </a-text>
+
+
+    <!-- =====================================================
+         BOTÃO CONCLUIR
+    ====================================================== -->
+
+    <a-entity
+
+        id="areaConclusao"
+
+        visible="false">
+
+
+        <a-plane
+
+            id="btnConcluir"
+
+            class="interativo"
+
+            position="0 -0.28 -3.87"
+
+            width="2.5"
+
+            height="0.52"
+
+            color="#008cff"
+
+            material="
+                shader: flat;
+                emissive: #008cff;
+                emissiveIntensity: 3;
+            ">
+
+        </a-plane>
+
+
+        <a-text
+
+            value="CONCLUIR EXPERIMENTO"
+
+            align="center"
+
+            color="#ffffff"
+
+            width="2.7"
+
+            position="0 -0.28 -3.90">
+
+        </a-text>
+
+
+    </a-entity>
+
+
+    <!-- =====================================================
+         CÂMERA
+    ====================================================== -->
+
+    <a-camera
+
+        position="0 1.6 0"
+
+        look-controls>
+
+
+        <a-cursor
+
+            fuse="false"
+
+            raycaster="
+                objects: .interativo;
+                far: 30;
+            "
+
+            geometry="
+                primitive: ring;
+                radiusInner: 0.012;
+                radiusOuter: 0.028;
+            "
+
+            material="
+                shader: flat;
+                color: #ff1744;
+                opacity: 1;
+            ">
+
+        </a-cursor>
+
+
+    </a-camera>
+
+
+    <!-- =====================================================
+         CONTROLE ESQUERDO
+    ====================================================== -->
+
+    <a-entity
+
+        id="controleEsquerdo"
+
+        laser-controls="hand: left"
+
+        raycaster="
+            objects: .interativo;
+            far: 20;
+        ">
+
+    </a-entity>
+
+
+    <!-- =====================================================
+         CONTROLE DIREITO
+    ====================================================== -->
+
+    <a-entity
+
+        id="controleDireito"
+
+        laser-controls="hand: right"
+
+        raycaster="
+            objects: .interativo;
+            far: 20;
+        ">
+
+    </a-entity>
+
+
+</a-scene>
+
+
+<script>
+
+
+/* ============================================================
+   PARTÍCULAS
+============================================================ */
+
+const ambiente =
+    document.getElementById("particulas");
+
+
+for (let i = 0; i < 220; i++) {
+
+    const particula =
+        document.createElement("a-sphere");
+
+
+    const distancia =
+        6 + Math.random() * 10;
+
+
+    const angulo =
+        Math.random() * Math.PI * 2;
+
+
+    const altura =
+        -2 + Math.random() * 7;
+
+
+    const x =
+        Math.cos(angulo) * distancia;
+
+
+    const z =
+        Math.sin(angulo) * distancia;
+
+
+    const tamanho =
+        0.015 + Math.random() * 0.045;
+
+
+    const cor =
+        Math.random() < 0.5
+            ? "#008cff"
+            : "#ff1744";
+
+
+    particula.setAttribute(
+        "position",
+        `${x} ${altura} ${z}`
+    );
+
+
+    particula.setAttribute(
+        "radius",
+        tamanho
+    );
+
+
+    particula.setAttribute(
+        "material",
+        `
+        shader: flat;
+        color: ${cor};
+        emissive: ${cor};
+        emissiveIntensity: 4;
+        `
+    );
+
+
+    ambiente.appendChild(particula);
+
+}
+
+
+
+/* ============================================================
+   ELEMENTOS
+============================================================ */
+
+const barraPotencia =
+    document.getElementById("barraPotencia");
+
+
+const barraPreenchida =
+    document.getElementById("barraPreenchida");
+
+
+const controlePotencia =
+    document.getElementById("controlePotencia");
+
+
+const pressao =
+    document.getElementById("pressao");
+
+
+const temperatura =
+    document.getElementById("temperatura");
+
+
+const energia =
+    document.getElementById("energia");
+
+
+const status =
+    document.getElementById("status");
+
+
+const instrucao =
+    document.getElementById("instrucao");
+
+
+const vapor =
+    document.getElementById("vapor");
+
+
+const luzLampada =
+    document.getElementById("luzLampada");
+
+
+const areaConclusao =
+    document.getElementById("areaConclusao");
+
+
+const btnConcluir =
+    document.getElementById("btnConcluir");
+
+
+const engrenagem1 =
+    document.getElementById("engrenagem1");
+
+
+const engrenagem2 =
+    document.getElementById("engrenagem2");
+
+
+const fogo1 =
+    document.getElementById("fogo1");
+
+
+const fogo2 =
+    document.getElementById("fogo2");
+
+
+const fogo3 =
+    document.getElementById("fogo3");
+
+
+const controleEsquerdo =
+    document.getElementById("controleEsquerdo");
+
+
+const controleDireito =
+    document.getElementById("controleDireito");
+
+
+
+/* ============================================================
+   VARIÁVEIS
+============================================================ */
+
+let progresso = 0;
+
+let arrastando = false;
+
+let concluido = false;
+
+let controleAtivo = null;
+
+
+
+/* ============================================================
+   LIMITES DA BARRA
+============================================================ */
+
+const MIN_X = -2.15;
+
+const MAX_X = 2.15;
+
+
+
+/* ============================================================
+   ATUALIZAR PROGRESSO
+============================================================ */
+
+function atualizarProgresso(valor) {
+
+    if (concluido) {
+        return;
+    }
+
+
+    progresso =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                valor
+            )
+        );
+
+
+    /* ========================================================
+       POSIÇÃO DO CONTROLE
+    ======================================================== */
+
+    const x =
+        MIN_X +
+        ((MAX_X - MIN_X) * progresso / 100);
+
+
+    controlePotencia.setAttribute(
+        "position",
+        `${x} 0.25 -3.80`
+    );
+
+
+    /* ========================================================
+       BARRA VERMELHA
+    ======================================================== */
+
+    const largura =
+        4.3 * progresso / 100;
+
+
+    barraPreenchida.setAttribute(
+        "width",
+        largura
+    );
+
+
+    barraPreenchida.setAttribute(
+        "position",
+        `${MIN_X + largura / 2} 0.25 -3.84`
+    );
+
+
+    /* ========================================================
+       PRESSÃO
+    ======================================================== */
+
+    pressao.setAttribute(
+        "value",
+        `${Math.round(progresso)}%`
+    );
+
+
+    /* ========================================================
+       TEMPERATURA
+    ======================================================== */
+
+    const temperaturaAtual =
+        20 + (progresso * 1);
+
+
+    temperatura.setAttribute(
+        "value",
+        `${Math.round(temperaturaAtual)} °C`
+    );
+
+
+    /* ========================================================
+       ENERGIA
+    ======================================================== */
+
+    energia.setAttribute(
+        "value",
+        `${Math.round(progresso)}%`
+    );
+
+
+    /* ========================================================
+       FOGO
+    ======================================================== */
+
+    const escalaFogo =
+        0.5 + (progresso / 100) * 1.5;
+
+
+    fogo1.setAttribute(
+        "scale",
+        `${escalaFogo} ${escalaFogo} ${escalaFogo}`
+    );
+
+
+    fogo2.setAttribute(
+        "scale",
+        `${escalaFogo} ${escalaFogo} ${escalaFogo}`
+    );
+
+
+    fogo3.setAttribute(
+        "scale",
+        `${escalaFogo} ${escalaFogo} ${escalaFogo}`
+    );
+
+
+    /* ========================================================
+       VAPOR
+    ======================================================== */
+
+    if (progresso >= 25) {
+
+        vapor.setAttribute(
+            "visible",
+            "true"
+        );
+
+    }
+
+    else {
+
+        vapor.setAttribute(
+            "visible",
+            "false"
+        );
+
+    }
+
+
+    /* ========================================================
+       ENGRENAGENS
+    ======================================================== */
+
+    const rotacao =
+        progresso * 10;
+
+
+    engrenagem1.setAttribute(
+        "rotation",
+        `90 0 ${rotacao}`
+    );
+
+
+    engrenagem2.setAttribute(
+        "rotation",
+        `90 0 ${-rotacao * 1.4}`
+    );
+
+
+    /* ========================================================
+       STATUS
+    ======================================================== */
+
+    if (progresso === 0) {
+
+        status.setAttribute(
+            "value",
+            "MÁQUINA DESLIGADA"
+        );
+
+        status.setAttribute(
+            "color",
+            "#777777"
+        );
+
+        instrucao.setAttribute(
+            "value",
+            "Segure o gatilho e arraste a potência para a direita."
+        );
+
+    }
+
+
+    else if (progresso < 30) {
+
+        status.setAttribute(
+            "value",
+            "AQUECENDO A MÁQUINA"
+        );
+
+        status.setAttribute(
+            "color",
+            "#ff1744"
+        );
+
+        instrucao.setAttribute(
+            "value",
+            "Continue aumentando a potência."
+        );
+
+    }
+
+
+    else if (progresso < 70) {
+
+        status.setAttribute(
+            "value",
+            "PRESSÃO AUMENTANDO"
+        );
+
+        status.setAttribute(
+            "color",
+            "#008cff"
+        );
+
+        instrucao.setAttribute(
+            "value",
+            "A máquina está produzindo vapor."
+        );
+
+    }
+
+
+    else if (progresso < 100) {
+
+        status.setAttribute(
+            "value",
+            "ALTA PRESSÃO"
+        );
+
+        status.setAttribute(
+            "color",
+            "#ff1744"
+        );
+
+        instrucao.setAttribute(
+            "value",
+            "Continue até atingir 100%."
+        );
+
+    }
+
+
+    /* ========================================================
+       FINAL
+    ======================================================== */
+
+    if (progresso >= 100) {
+
+        finalizarExperimento();
+
+    }
+
+}
+
+
+
+/* ============================================================
+   PEGAR PONTO DO LASER
+============================================================ */
+
+function obterIntersecao(controller) {
+
+    const raycaster =
+        controller.components.raycaster;
+
+
+    if (!raycaster) {
+        return null;
+    }
+
+
+    const intersecoes =
+        raycaster.intersections;
+
+
+    if (!intersecoes ||
+        intersecoes.length === 0) {
+
+        return null;
+
+    }
+
+
+    for (const intersecao of intersecoes) {
+
+        if (
+            intersecao.object &&
+            (
+                intersecao.object.el === barraPotencia ||
+                intersecao.object.el === controlePotencia
+            )
+        ) {
+
+            return intersecao.point;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+
+/* ============================================================
+   COMEÇAR ARRASTAMENTO
+============================================================ */
+
+function iniciarArrastamento(controller) {
+
+    if (concluido) {
+        return;
+    }
+
+
+    const ponto =
+        obterIntersecao(controller);
+
+
+    if (!ponto) {
+        return;
+    }
+
+
+    arrastando = true;
+
+    controleAtivo = controller;
+
+
+    status.setAttribute(
+        "value",
+        "CONTROLE DE POTÊNCIA ATIVADO"
+    );
+
+
+    status.setAttribute(
+        "color",
+        "#008cff"
+    );
+
+}
+
+
+
+/* ============================================================
+   ARRASTAR
+============================================================ */
+
+function atualizarArrastamento(controller) {
+
+    if (!arrastando) {
+        return;
+    }
+
+
+    if (controller !== controleAtivo) {
+        return;
+    }
+
+
+    const ponto =
+        obterIntersecao(controller);
+
+
+    if (!ponto) {
+        return;
+    }
+
+
+    const x =
+        Math.max(
+            MIN_X,
+            Math.min(
+                MAX_X,
+                ponto.x
+            )
+        );
+
+
+    const percentual =
+        ((x - MIN_X) /
+        (MAX_X - MIN_X)) * 100;
+
+
+    atualizarProgresso(
+        percentual
+    );
+
+}
+
+
+
+/* ============================================================
+   TERMINAR ARRASTAMENTO
+============================================================ */
+
+function terminarArrastamento(controller) {
+
+    if (controller !== controleAtivo) {
+        return;
+    }
+
+
+    arrastando = false;
+
+    controleAtivo = null;
+
+
+    if (!concluido) {
+
+        if (progresso >= 100) {
+
+            status.setAttribute(
+                "value",
+                "ENERGIA GERADA!"
+            );
+
+        }
+
+        else {
+
+            status.setAttribute(
+                "value",
+                `${Math.round(progresso)}% DE POTÊNCIA`
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* ============================================================
+   CONTROLES DO QUEST
+============================================================ */
+
+controleEsquerdo.addEventListener(
+    "triggerdown",
+    function () {
+
+        iniciarArrastamento(
+            controleEsquerdo
+        );
+
+    }
+);
+
+
+controleDireito.addEventListener(
+    "triggerdown",
+    function () {
+
+        iniciarArrastamento(
+            controleDireito
+        );
+
+    }
+);
+
+
+controleEsquerdo.addEventListener(
+    "triggerup",
+    function () {
+
+        terminarArrastamento(
+            controleEsquerdo
+        );
+
+    }
+);
+
+
+controleDireito.addEventListener(
+    "triggerup",
+    function () {
+
+        terminarArrastamento(
+            controleDireito
+        );
+
+    }
+);
+
+
+
+/* ============================================================
+   ATUALIZAÇÃO CONTÍNUA DO LASER
+============================================================ */
+
+controleEsquerdo.addEventListener(
+    "raycaster-intersection",
+    function () {
+
+        atualizarArrastamento(
+            controleEsquerdo
+        );
+
+    }
+);
+
+
+controleDireito.addEventListener(
+    "raycaster-intersection",
+    function () {
+
+        atualizarArrastamento(
+            controleDireito
+        );
+
+    }
+);
+
+
+
+/* ============================================================
+   TESTE PELO OLHAR / CURSOR
+============================================================ */
+
+barraPotencia.addEventListener(
+    "click",
+    function (evento) {
+
+        if (concluido) {
+            return;
+        }
+
+
+        if (
+            evento.detail &&
+            evento.detail.intersection
+        ) {
+
+            const ponto =
+                evento.detail.intersection.point;
+
+
+            const x =
+                Math.max(
+                    MIN_X,
+                    Math.min(
+                        MAX_X,
+                        ponto.x
+                    )
+                );
+
+
+            const percentual =
+                ((x - MIN_X) /
+                (MAX_X - MIN_X)) * 100;
+
+
+            atualizarProgresso(
+                percentual
+            );
+
+        }
+
+    }
+);
+
+
+
+/* ============================================================
+   FINALIZAR EXPERIMENTO
+============================================================ */
+
+function finalizarExperimento() {
+
+    if (concluido) {
+        return;
+    }
+
+
+    concluido = true;
+
+
+    /* ========================================================
+       VALORES FINAIS
+    ======================================================== */
+
+    progresso = 100;
+
+
+    pressao.setAttribute(
+        "value",
+        "100%"
+    );
+
+
+    temperatura.setAttribute(
+        "value",
+        "120 °C"
+    );
+
+
+    energia.setAttribute(
+        "value",
+        "100%"
+    );
+
+
+    /* ========================================================
+       CONTROLE NO FINAL
+    ======================================================== */
+
+    controlePotencia.setAttribute(
+        "position",
+        `${MAX_X} 0.25 -3.80`
+    );
+
+
+    barraPreenchida.setAttribute(
+        "width",
+        "4.3"
+    );
+
+
+    barraPreenchida.setAttribute(
+        "position",
+        "0 0.25 -3.84"
+    );
+
+
+    /* ========================================================
+       VAPOR
+    ======================================================== */
+
+    vapor.setAttribute(
+        "visible",
+        "true"
+    );
+
+
+    /* ========================================================
+       FOGO MÁXIMO
+    ======================================================== */
+
+    fogo1.setAttribute(
+        "scale",
+        "2 2 2"
+    );
+
+
+    fogo2.setAttribute(
+        "scale",
+        "2 2 2"
+    );
+
+
+    fogo3.setAttribute(
+        "scale",
+        "2 2 2"
+    );
+
+
+    /* ========================================================
+       LÂMPADA
+    ======================================================== */
+
+    luzLampada.setAttribute(
+        "color",
+        "#ff1744"
+    );
+
+
+    luzLampada.setAttribute(
+        "material",
+        `
+        shader: flat;
+        color: #ff1744;
+        emissive: #ff1744;
+        emissiveIntensity: 8;
+        `
+    );
+
+
+    /* ========================================================
+       STATUS
+    ======================================================== */
+
+    status.setAttribute(
+        "value",
+        "ENERGIA GERADA!"
+    );
+
+
+    status.setAttribute(
+        "color",
+        "#008cff"
+    );
+
+
+    instrucao.setAttribute(
+        "value",
+        "Experimento concluído! A energia foi transformada."
+    );
+
+
+    /* ========================================================
+       BOTÃO
+    ======================================================== */
+
+    areaConclusao.setAttribute(
+        "visible",
+        "true"
+    );
+
+
+    /* ========================================================
+       SALVAR
+    ======================================================== */
+
+    localStorage.setItem(
+        "maquinaConcluido",
+        "true"
+    );
+
+}
+
+
+
+/* ============================================================
+   BOTÃO CONCLUIR
+============================================================ */
+
+btnConcluir.addEventListener(
+    "click",
+    function () {
+
+        window.location.href =
+            "./experimento.html";
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
